@@ -9,3 +9,7 @@ class EpisodePayload(BaseModel):
     episode_body: str
     source_description: str
     group_id: Optional[str] = None
+
+class RetrieveEpisodePayload(BaseModel):
+    user_query:str
+    group_id: Optional[list[str]] = None

@@ -1,4 +1,4 @@
-from app.api.v1.models import PingPayload, EpisodePayload
+from app.api.v1.models import PingPayload, EpisodePayload, RetrieveEpisodePayload
 from app.services.graph_service.graph_client import graphiti
 import datetime
 from app.services.graph_service.graph_schemas import entity_types, edge_types, edge_type_map
@@ -29,3 +29,9 @@ async def add_episode(payload:EpisodePayload):
             reference_time=datetime.datetime.now(),
             edge_type_map=edge_type_map
         )
+
+async def retrieve_episode(payload: RetrieveEpisodePayload):
+    if payload.group_id:
+        return await graphiti.search(query=payload.user_query, group_ids=payload.group_id)
+    else:
+        return await graphiti.search(query=payload.user_query)
