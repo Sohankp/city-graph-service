@@ -32,6 +32,12 @@ async def add_episode(payload:EpisodePayload):
 
 async def retrieve_episode(payload: RetrieveEpisodePayload):
     if payload.group_id:
-        return await graphiti.search(query=payload.user_query, group_ids=payload.group_id)
+        results = await graphiti.search(query=payload.user_query, group_ids=payload.group_id)
     else:
-        return await graphiti.search(query=payload.user_query)
+        results = await graphiti.search(query=payload.user_query)
+
+    # Remove 'attributes' from each result (assumed to be a list of dicts)
+    for item in results:
+        item.pop("attributes", None)  # Safely remove 'attributes' if it exists
+
+    return results
